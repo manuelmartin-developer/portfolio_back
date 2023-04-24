@@ -6,14 +6,7 @@ import bodyparser from "body-parser";
 import sequelizeConnection from "./utils/database";
 import authRouter from "./routes/auth";
 import usersRouter from "./routes/users";
-const {
-  color,
-  log,
-  red,
-  green,
-  cyan,
-  cyanBright
-} = require("console-log-colors");
+const { log, black, white, cyan } = require("console-log-colors");
 const cors = require("cors");
 
 const swaggerUi = require("swagger-ui-express"),
@@ -73,11 +66,11 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 sequelizeConnection
   .sync()
   .then((result: any) => {
-    console.log(cyanBright.bgGreen("Database connected"));
+    console.log(black.bgGreen("Database connected"));
     app.listen(process.env.PORT || 3000, () => {
-      console.log(cyanBright.bgGreen("Server started"));
+      console.log(black.bgGreen("Server started"));
     });
   })
   .catch((err: any) =>
-    console.log(cyan.bgRed("Error in database connection --> " + err))
+    console.log(white.bgRed("Error in database connection --> " + err))
   );

@@ -8,6 +8,13 @@ RUN yarn install
 
 COPY . .
 
-EXPOSE 8080
+FROM nginx:1.19.6-alpine
 
-CMD ["npm", "run", "dev"]
+# Copy build from builder stage
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Run nginx
+CMD ["nginx", "-g", "daemon off;"]
