@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -8,13 +8,6 @@ RUN yarn install
 
 COPY . .
 
-FROM nginx:1.23.4-alpine
+EXPOSE 8080
 
-# Copy build from builder stage
-COPY --from=builder /app /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Run nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "dev"]
