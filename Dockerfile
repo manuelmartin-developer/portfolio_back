@@ -5,4 +5,4 @@ RUN yarn install
 COPY ./api .
 RUN yarn build
 CMD ["yarn", "start"]
-EXPOSE 80
+EXPOSE 8080
