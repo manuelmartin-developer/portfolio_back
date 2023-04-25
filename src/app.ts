@@ -67,8 +67,8 @@ sequelizeConnection
   .sync()
   .then((result: any) => {
     console.log(black.bgGreen("Database connected"));
-    app.listen(process.env.PORT || 3000, () => {
-      console.log(black.bgGreen("Server started"));
+    app.listen(process.env.PORT || 8080, () => {
+      console.log(black.bgGreen(`Server started on port ${process.env.PORT}`));
     });
   })
   .catch((err: any) =>
