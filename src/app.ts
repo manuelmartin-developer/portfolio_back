@@ -17,7 +17,7 @@ const app: Application = express();
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 const corsOpts = {
-  origin: "*",
+  origin: ["https://www.manuelmartin.dev", "92.189.35.223"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 };
