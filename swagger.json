@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "212.227.163.20",
+  "host": "api.manuelmartin.dev",
   "basePath": "/api/v1",
   "tags": [
     {
@@ -331,7 +331,7 @@
     }
   },
 
-  "schemes": ["http"],
+  "schemes": ["http", "api.manuelmartin.dev"],
   "consumes": ["application/json"],
   "produces": ["application/json"]
 }
