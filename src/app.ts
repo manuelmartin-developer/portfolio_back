@@ -51,7 +51,7 @@ app.get(
 //CRUD routes
 app.use(`${process.env.API_BASE_PATH}/users`, usersRouter);
 app.use(`${process.env.API_BASE_PATH}/auth`, authRouter);
-app.use(`${process.env.API_BASE_PATH}/`, fakeRouter);
+app.use(`${process.env.API_BASE_PATH}/fake`, fakeRouter);
 
 // Swagger docs
 app.use(
