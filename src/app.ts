@@ -21,7 +21,7 @@ const corsOpts = {
   origin: [
     "https://www.manuelmartin.dev",
     "https://manuelmartin.dev",
-    "92.189.35.223"
+    "http://localhost:3000"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
