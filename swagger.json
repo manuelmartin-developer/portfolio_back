@@ -278,6 +278,40 @@
           }
         }
       }
+    },
+    "/fake": {
+      "get": {
+        "tags": ["Fake"],
+        "summary": "To test the api",
+        "description": "",
+        "operationId": "test",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Fake"],
+        "summary": "To test the api",
+        "description": "",
+        "operationId": "test",
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {

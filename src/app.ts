@@ -6,6 +6,7 @@ import bodyparser from "body-parser";
 import sequelizeConnection from "./utils/database";
 import authRouter from "./routes/auth";
 import usersRouter from "./routes/users";
+import fakeRouter from "./routes/fake";
 const { log, black, white, cyan } = require("console-log-colors");
 const cors = require("cors");
 
@@ -50,6 +51,7 @@ app.get(
 //CRUD routes
 app.use(`${process.env.API_BASE_PATH}/users`, usersRouter);
 app.use(`${process.env.API_BASE_PATH}/auth`, authRouter);
+app.use(`${process.env.API_BASE_PATH}/`, fakeRouter);
 
 // Swagger docs
 app.use(
