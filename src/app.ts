@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "./.env/.env" });
+require("dotenv").config();
 import express, { Application, Request, Response, NextFunction } from "express";
 import morgan from "morgan";
 
@@ -7,8 +7,9 @@ import sequelizeConnection from "./utils/database";
 import authRouter from "./routes/auth";
 import usersRouter from "./routes/users";
 import fakeRouter from "./routes/fake";
-const { log, black, white, cyan } = require("console-log-colors");
-const cors = require("cors");
+import { log, black, white, cyan } from "console-log-colors";
+import cors from "cors";
+import si from "systeminformation";
 
 const swaggerUi = require("swagger-ui-express"),
   swaggerDocument = require("../swagger.json");
@@ -27,13 +28,41 @@ const corsOpts = {
   allowedHeaders: ["Content-Type", "Authorization"]
 };
 
+(async () => {
+  const cpu = await si.currentLoad();
+  console.log("avgLoad", cpu.avgLoad);
+  console.log("currentLoad", cpu.currentLoad);
+  console.log("currentLoadIdle", cpu.currentLoadIdle);
+
+  const mem = await si.mem();
+  console.log(mem.total);
+  console.log(mem.used);
+  console.log(mem.active);
+  console.log(mem.available);
+
+  const os = await si.osInfo();
+  console.log(os.platform);
+  console.log(os.distro);
+  console.log(os.release);
+  console.log(os.codename);
+
+  const fsSize = await si.fsSize();
+  console.log(fsSize[0].fs);
+  console.log(fsSize[0].type);
+  console.log(fsSize[0].size);
+  console.log(fsSize[0].used);
+
+  const docker = await si.dockerInfo();
+  console.log(docker);
+})();
+
 // Middlewares
 app.use(cors(corsOpts));
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms", {
     stream: {
       write: (message) => {
-        log(cyan(message));
+        log(message, "cyan");
       }
     }
   })
