@@ -100,30 +100,30 @@ export const createUser = async (
   next: NextFunction
 ) => {
   try {
-    if (!req.headers.authorization) {
-      res
-        .status(403)
-        .json({ message: "No tienes permisos para acceder a esta ruta" });
-      return;
-    }
+    // if (!req.headers.authorization) {
+    //   res
+    //     .status(403)
+    //     .json({ message: "No tienes permisos para acceder a esta ruta" });
+    //   return;
+    // }
 
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = await decodeToken(token);
-    if (!decodedToken) {
-      res
-        .status(403)
-        .json({ message: "No tienes permisos para acceder a esta ruta" });
-      return;
-    }
+    // const token = req.headers.authorization.split(" ")[1];
+    // const decodedToken = await decodeToken(token);
+    // if (!decodedToken) {
+    //   res
+    //     .status(403)
+    //     .json({ message: "No tienes permisos para acceder a esta ruta" });
+    //   return;
+    // }
 
-    const userRole = decodedToken.role;
+    // const userRole = decodedToken.role;
 
-    if (userRole !== "admin") {
-      res
-        .status(403)
-        .json({ message: "No tienes permisos para acceder a esta ruta" });
-      return;
-    }
+    // if (userRole !== "admin") {
+    //   res
+    //     .status(403)
+    //     .json({ message: "No tienes permisos para acceder a esta ruta" });
+    //   return;
+    // }
 
     const { name, email, password, role } = req.body;
 
