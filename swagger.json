@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "api.manuelmartin.dev",
+  "host": "api.portfolio.manuelmartin.dev",
   "basePath": "/api/v1",
   "tags": [
     {
