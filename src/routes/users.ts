@@ -6,14 +6,15 @@ import {
   updateUser,
   deleteUser
 } from "../controllers/users";
+import { verifyAuth } from "../middlewares/verifyAuth";
 
 const userRouter = Router();
 
 // CRUD Routes /users
-userRouter.get("/", getUsers); // /users
-userRouter.post("/", createUser); // /users
-userRouter.get("/:userId", getUser); // /users/:userId
-userRouter.put("/:userId", updateUser); // /users/:userId
-userRouter.delete("/:userId", deleteUser); // /users/:userId
+userRouter.get("/", verifyAuth, getUsers); // /users
+userRouter.post("/", verifyAuth, createUser); // /users
+userRouter.get("/:userId", verifyAuth, getUser); // /users/:userId
+userRouter.put("/:userId", verifyAuth, updateUser); // /users/:userId
+userRouter.delete("/:userId", verifyAuth, deleteUser); // /users/:userId
 
 export default userRouter;
