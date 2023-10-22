@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import e, { Request, Response, NextFunction } from "express";
 import { User } from "../models/user";
 import { verifyPassword } from "../utils/managePass";
 import { generateToken, decodeToken } from "../utils/manageToken";
@@ -61,56 +61,50 @@ export const verifyToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  // TODO - review this function
   try {
-    const headerToken = req.headers.authorization?.split(" ")[1];
-    if (!headerToken) {
-      res
-        .status(403)
-        .json({ message: "No tiene permisos para acceder a esta ruta" });
-      return;
-    }
-    const decodedToken = await decodeToken(headerToken);
-
-    if (!decodedToken) {
-      res.status(403).json({ message: "Token incorrecto" });
-      return;
-    }
-    const { role: headerRole } = decodedToken;
-
-    const bodyToken = await req.body.token;
-
-    if (!bodyToken) {
+    const token = await req.body.token;
+    if (!token) {
       res.status(400).json({ message: "El token es requerido" });
       return;
     }
+    const JWTRegex =
+      /^([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\+\/=]*)/gm;
 
-    if (!bodyToken.startsWith("ey")) {
-      res.status(400).json({ message: "El token es incorrecto" });
+    if (!JWTRegex.test(token)) {
+      res.status(400).json({ message: "El token no es correcto" });
+      return;
+    }
+    const decodedToken = await decodeToken(token);
+
+    if (!decodedToken) {
+      res.status(401).json({ message: "Token incorrecto" });
       return;
     }
 
-    const decodedBodyToken = await decodeToken(bodyToken);
+    const { id } = decodedToken;
 
-    if (!decodedBodyToken) {
-      res.status(403).json({ message: "Token incorrecto" });
+    if (!id) {
+      res.status(401).json({ message: "Token incorrecto" });
       return;
     }
 
-    if (headerToken !== bodyToken && headerRole !== "admin") {
-      res
-        .status(403)
-        .json({ message: "No tienes permisos para acceder a esta ruta" });
+    const existingUser = await User.findOne({ where: { id: id } });
+
+    if (!existingUser) {
+      res.status(404).json({ message: "No se ha encontrado el usuario" });
       return;
     }
 
-    res.status(200).json({
-      message: "Token correcto",
-      id: decodedBodyToken.id,
-      email: decodedBodyToken.email,
-      role: decodedBodyToken.role
-    });
+    const isAdmin = (await existingUser.getDataValue("role")) === "admin";
+
+    if (!isAdmin) {
+      res.status(401).json({ message: "No tienes permisos para esta ruta" });
+      return;
+    }
+
+    res.status(200).json({ message: "Bienvenido Admin!!" });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Error en el servidor" });
   }
 };
