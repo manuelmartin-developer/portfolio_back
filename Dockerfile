@@ -1,6 +1,6 @@
 FROM node:18-alpine AS server
 WORKDIR /app
-COPY ./api/package* ./
+COPY ./portfolio_back/package* ./
 RUN yarn install
 COPY ./api .
 EXPOSE 8082
