@@ -5,7 +5,7 @@ import {
   createUser,
   updateUser,
   deleteUser
-} from "../controllers/users";
+} from "../controllers/users_controller";
 import { verifyAuth } from "../middlewares/verifyAuth";
 
 const userRouter = Router();

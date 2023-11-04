@@ -2,11 +2,22 @@ require("dotenv").config();
 import express, { Application, Request, Response, NextFunction } from "express";
 import morgan from "morgan";
 import sequelizeConnection from "./utils/database";
-import authRouter from "./routes/auth";
-import usersRouter from "./routes/users";
-import fakeRouter from "./routes/fake";
+import authRouter from "./routes/auth_router";
+import usersRouter from "./routes/users_router";
 import { log, black, white, cyan } from "console-log-colors";
 import cors from "cors";
+import * as basicAuth from "express-basic-auth";
+import postsRouter from "./routes/posts_router";
+import filesRouter from "./routes/files_router";
+import projectsRouter from "./routes/projects_router";
+import categoriesRouter from "./routes/categories_router";
+import spotifyRouter from "./routes/spotify_router";
+import codingRouter from "./routes/coding_router";
+
+const docsAuthUser = process.env.DOCS_AUTH_USER;
+const docsAuthPassword = process.env.DOCS_AUTH_PASSWORD;
+let users: any = {};
+users[docsAuthUser!] = docsAuthPassword;
 
 const swaggerUi = require("swagger-ui-express"),
   swaggerDocument = require("../swagger.json");
@@ -44,12 +55,22 @@ app.use(express.static("public"));
 
 //CRUD routes
 app.use(`${process.env.API_BASE_PATH}/users`, usersRouter);
+app.use(`${process.env.API_BASE_PATH}/categories`, categoriesRouter);
 app.use(`${process.env.API_BASE_PATH}/auth`, authRouter);
-app.use(`${process.env.API_BASE_PATH}/fake`, fakeRouter);
+app.use(`${process.env.API_BASE_PATH}/posts`, postsRouter);
+app.use(`${process.env.API_BASE_PATH}/projects`, projectsRouter);
+app.use(`${process.env.API_BASE_PATH}/files`, filesRouter);
+app.use(`${process.env.API_BASE_PATH}/spotify`, spotifyRouter);
+app.use(`${process.env.API_BASE_PATH}/coding`, codingRouter);
 
 // Swagger docs
 app.use(
   `${process.env.API_BASE_PATH}/docs`,
+  basicAuth.default({
+    users: users,
+    challenge: true,
+    realm: "Imb4T3st4pp"
+  }),
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument)
 );

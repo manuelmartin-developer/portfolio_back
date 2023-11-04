@@ -1,11 +1,4 @@
-import {
-  Table,
-  Model,
-  Column,
-  DataType,
-  Scopes,
-  DefaultScope
-} from "sequelize-typescript";
+import { Table, Model, Column, DataType, Scopes } from "sequelize-typescript";
 
 @Scopes(() => ({
   withoutPassword: {
@@ -14,6 +7,14 @@ import {
 }))
 @Table({ tableName: "users" })
 export class User extends Model {
+  @Column({
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
+    allowNull: false,
+    primaryKey: true
+  })
+  code!: string;
+
   @Column({ type: DataType.STRING, allowNull: false })
   name!: string;
 
@@ -23,6 +24,13 @@ export class User extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   password!: string;
 
-  @Column({ type: DataType.STRING, allowNull: false, defaultValue: "user" })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    defaultValue: "user",
+    validate: {
+      isIn: [["user", "admin"]]
+    }
+  })
   role!: string;
 }

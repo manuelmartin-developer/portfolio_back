@@ -1,5 +1,5 @@
-import e, { Request, Response, NextFunction } from "express";
-import { User } from "../models/user";
+import { Request, Response, NextFunction } from "express";
+import { User } from "../models/user_model";
 import { verifyPassword } from "../utils/managePass";
 import { generateToken, decodeToken } from "../utils/manageToken";
 
@@ -40,8 +40,8 @@ export const login = async (
       return;
     }
 
-    const token = await generateToken(
-      existingUser.getDataValue("id"),
+    const token = generateToken(
+      existingUser.getDataValue("code"),
       existingUser.getDataValue("email"),
       existingUser.getDataValue("role")
     );
@@ -77,18 +77,18 @@ export const verifyToken = async (
     const decodedToken = await decodeToken(token);
 
     if (!decodedToken) {
-      res.status(401).json({ message: "Token incorrecto" });
+      res.status(401).json({ message: "No se ha podido decodificar el token" });
       return;
     }
 
-    const { id } = decodedToken;
+    const { code } = decodedToken;
 
-    if (!id) {
-      res.status(401).json({ message: "Token incorrecto" });
+    if (!code) {
+      res.status(401).json({ message: "El token no contiene un code" });
       return;
     }
 
-    const existingUser = await User.findOne({ where: { id: id } });
+    const existingUser = await User.findOne({ where: { code } });
 
     if (!existingUser) {
       res.status(404).json({ message: "No se ha encontrado el usuario" });

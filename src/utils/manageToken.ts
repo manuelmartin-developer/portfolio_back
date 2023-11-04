@@ -1,8 +1,8 @@
 import { encode, decode } from "jwt-simple";
 
-export const generateToken = (id: number, email: string, role: string) => {
+export const generateToken = (code: number, email: string, role: string) => {
   const payload = {
-    id,
+    code,
     email,
     role
   };

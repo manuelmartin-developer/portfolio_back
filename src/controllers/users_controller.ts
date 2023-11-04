@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { User } from "../models/user";
+import { User } from "../models/user_model";
 const { hashPassword } = require("../utils/managePass");
 const { decodeToken } = require("../utils/manageToken");
 
