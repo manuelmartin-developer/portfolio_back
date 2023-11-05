@@ -61,6 +61,8 @@ export const getCategories = async (
         categories: categoriesWithCount
       });
     }
+
+    res.status(200).json({ message: "Categorias registradas", categories });
   } catch (error) {
     console.log(white.bgRed("Error: " + error));
     res.status(500).json({ message: "Error en el servidor" });
