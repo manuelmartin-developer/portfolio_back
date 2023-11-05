@@ -5,6 +5,7 @@ import { Upload } from "@aws-sdk/lib-storage";
 import multiparty from "multiparty";
 import { white } from "console-log-colors";
 import fs from "fs";
+import sizeOf from "image-size";
 import {
   S3Client,
   DeleteObjectCommand,
@@ -154,7 +155,6 @@ export const uploadFiles = async (
             client: s3Client,
             params: {
               Bucket: process.env.S3_BUCKET!,
-              // replace [^a-zA-Z0-9/]" , "-"
               Key: `${entityType}/${existingEntity.getDataValue(
                 entityType === EntityType.POSTS ? "id_post" : "id_project"
               )}/${type}/${file.originalFilename.replaceAll(
@@ -179,7 +179,9 @@ export const uploadFiles = async (
           gallery_images_upload.push({
             url: result.Location.replace(/%2F/g, "/"),
             size: file.size,
-            name: file.originalFilename.replaceAll(/[^a-zA-Z0-9/.]/g, "-")
+            name: file.originalFilename.replaceAll(/[^a-zA-Z0-9/.]/g, "-"),
+            width: sizeOf(file.path).width,
+            height: sizeOf(file.path).height
           });
         }
       }
