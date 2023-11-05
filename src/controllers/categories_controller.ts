@@ -39,9 +39,7 @@ export const getCategories = async (
         message: "Categorias registradas",
         categories: categoriesWithCount
       });
-    }
-
-    if (type === "post") {
+    } else if (type === "post") {
       const posts = await Post.findAll();
 
       const categoriesWithCount = categories.map((category) => {
@@ -60,9 +58,9 @@ export const getCategories = async (
         message: "Categorias registradas",
         categories: categoriesWithCount
       });
+    } else {
+      res.status(200).json({ message: "Categorias registradas", categories });
     }
-
-    res.status(200).json({ message: "Categorias registradas", categories });
   } catch (error) {
     console.log(white.bgRed("Error: " + error));
     res.status(500).json({ message: "Error en el servidor" });
