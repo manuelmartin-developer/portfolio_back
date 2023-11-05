@@ -34,8 +34,6 @@ export const getPosts = async (
   try {
     const { id_category, name_category } = req.query;
 
-    console.log(name_category);
-
     const posts = await Post.scope("withoutCode").findAll({
       where: {
         isDraft: false,

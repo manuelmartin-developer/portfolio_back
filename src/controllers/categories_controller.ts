@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Category } from "../models/category_model";
+import { Project } from "../models/project_model";
+import { Post } from "../models/post_model";
 import { white } from "console-log-colors";
 
 // get all categories
@@ -18,7 +20,47 @@ export const getCategories = async (
           }
     );
 
-    res.status(200).json({ message: "Categorias registradas", categories });
+    if (type === "project") {
+      const projects = await Project.findAll();
+
+      const categoriesWithCount = categories.map((category) => {
+        const count = projects.filter((project) =>
+          project
+            .getDataValue("categories")
+            .some(
+              (categoryProject: any) =>
+                categoryProject.code === category.getDataValue("id_category")
+            )
+        ).length;
+        return { ...category.dataValues, project_count: count };
+      });
+
+      res.status(200).json({
+        message: "Categorias registradas",
+        categories: categoriesWithCount
+      });
+    }
+
+    if (type === "post") {
+      const posts = await Post.findAll();
+
+      const categoriesWithCount = categories.map((category) => {
+        const count = posts.filter((post) =>
+          post
+            .getDataValue("categories")
+            .some(
+              (categoryPost: any) =>
+                categoryPost.value === category.getDataValue("id_category")
+            )
+        ).length;
+        return { ...category.dataValues, post_count: count };
+      });
+
+      res.status(200).json({
+        message: "Categorias registradas",
+        categories: categoriesWithCount
+      });
+    }
   } catch (error) {
     console.log(white.bgRed("Error: " + error));
     res.status(500).json({ message: "Error en el servidor" });
