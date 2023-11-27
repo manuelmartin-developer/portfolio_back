@@ -46,7 +46,8 @@ export const getProjects = async (
             ]
           }
         })
-      }
+      },
+      order: [["id_project", "ASC"]]
     });
 
     res.status(200).json({ message: "Projects", projects: projects });
