@@ -58,4 +58,7 @@ export class Project extends Model {
 
   @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: true })
   isDraft!: boolean;
+
+  @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
+  hasComponent!: boolean;
 }

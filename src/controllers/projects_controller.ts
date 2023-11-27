@@ -150,7 +150,8 @@ export const createProject = async (
       featuredImage: null,
       gallery: [],
       technologies: [],
-      isDraft: true
+      isDraft: true,
+      hasComponent: false
     });
 
     res.status(201).json({ message: "Proyecto creado", project: project });
